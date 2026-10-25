@@ -1,0 +1,32 @@
+---
+/**
+ * Site header: brand, primary nav, garage link, language toggle, menu button.
+ */
+const nav = [
+  { href: "/driver", key: "nav.driver", en: "Driver" },
+  { href: "/season", key: "nav.season", en: "Season" },
+  { href: "/journal", key: "nav.journal", en: "Journal" },
+  { href: "/next-race", key: "nav.nextRace", en: "Next race" },
+  { href: "/store", key: "nav.store", en: "Store" },
+];
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
+---
+
+<header class="hero-header">
+  <a class="brand" href="/" aria-label="Grido1 Racing Systems">
+    <img src="/assets/hero/ui/grido1-logo.webp" alt="GRIDO1 Racing Systems" width="112" height="32" />
+  </a>
+  <nav class="header-nav" aria-label="Main navigation">
+    {nav.map((item) => (
+      <a href={item.href} data-i18n={item.key} aria-current={isActive(item.href) ? "page" : undefined}>
+        {item.en}
+      </a>
+    ))}
+  </nav>
+  <a class="garage" href="/garage" data-i18n="nav.garageBrackets">[ Garage → ]</a>
+  <button class="lang-toggle" type="button" aria-label="Switch language">العربية</button>
+  <button class="menu-toggle" id="menu-open" type="button" aria-label="Open menu" aria-controls="mobile-sheet" aria-expanded="false">
+    <span></span><span></span>
+  </button>
+</header>

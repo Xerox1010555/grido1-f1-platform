@@ -1,0 +1,116 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getNextRace, getCircuit, getDriver } from "../lib/api";
+
+const nextRace = getNextRace();
+const circuit = getCircuit(nextRace.circuitSlug);
+const driver = getDriver();
+const start = new Date(nextRace.startsAt);
+const dateLabel = start.toLocaleDateString("en-GB", { weekday: "long", day: "2-digit", month: "long", year: "numeric" });
+const timeLabel = start.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+
+// Weekend schedule derived from the race start date (Fri/Sat/Sun pattern).
+const day = (offset: number, hours: number, minutes = 0) => {
+  const d = new Date(start);
+  d.setUTCDate(d.getUTCDate() + offset);
+  d.setUTCHours(hours, minutes, 0, 0);
+  return d;
+};
+const schedule = [
+  { session: "Practice 1", when: day(-2, 11, 30) },
+  { session: "Practice 2", when: day(-2, 15, 0) },
+  { session: "Practice 3", when: day(-1, 11, 30) },
+  { session: "Qualifying", when: day(-1, 15, 0) },
+  { session: "Race", when: start, main: true },
+];
+---
+
+<BaseLayout
+  title={`Next race — ${nextRace.gpName} | GRIDO1 Racing Systems`}
+  description={`${driver.firstName} heads to ${nextRace.circuit} for round ${nextRace.round}: ${nextRace.gpName}, ${dateLabel}. Circuit info, schedule and countdown.`}
+>
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <p class="page-eyebrow">Round {nextRace.round} — {nextRace.country}</p>
+      <h1 class="page-title">{nextRace.gpName}<span class="period">.</span></h1>
+      <p class="page-lead">{nextRace.circuit} — {dateLabel}, {timeLabel} local time.</p>
+
+      <!-- Countdown -->
+      <div
+        id="countdown"
+        data-race-start={nextRace.startsAt}
+        style="display:flex;gap:2.5rem;margin-top:3rem;flex-wrap:wrap;"
+        aria-label="Countdown to lights out"
+      >
+        <div class="stat"><dt class="page-eyebrow">Days</dt><dd data-cd="days">––</dd></div>
+        <div class="stat"><dt class="page-eyebrow">Hours</dt><dd data-cd="hours">––</dd></div>
+        <div class="stat"><dt class="page-eyebrow">Minutes</dt><dd data-cd="minutes">––</dd></div>
+        <div class="stat"><dt class="page-eyebrow">Seconds</dt><dd data-cd="seconds">––</dd></div>
+      </div>
+    </div>
+  </section>
+
+  {circuit && (
+    <section class="page-section">
+      <div class="page-section-inner">
+        <div class="section-head">
+          <h2 class="section-title">The circuit</h2>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:3rem;align-items:center;">
+          <svg viewBox="0 0 900 600" style="width:100%;height:auto;background:var(--ink-950);" role="img" aria-label={`${circuit.name} track layout`}>
+            <g fill="none" stroke="var(--slate-600)" stroke-width="1.2" stroke-dasharray="7 5" opacity=".4">
+              <path d="M210 0V600M430 0V600M650 0V600M0 320H900" />
+            </g>
+            <path d={circuit.svgPath} fill="none" stroke="var(--cyan)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+            {circuit.turnMarkers.map((m) => (
+              <circle cx={m.x} cy={m.y} r="7" fill="var(--cyan)">
+                <title>{m.label}</title>
+              </circle>
+            ))}
+          </svg>
+          <dl class="stat-row" style="grid-template-columns:1fr 1fr;color:var(--ink-950)">
+            <div class="stat"><dt style="color:var(--slate-600)">Length</dt><dd style="font-size:1.75rem">{circuit.lengthKm} km</dd></div>
+            <div class="stat"><dt style="color:var(--slate-600)">Laps</dt><dd style="font-size:1.75rem">{circuit.laps}</dd></div>
+            <div class="stat"><dt style="color:var(--slate-600)">Turns</dt><dd style="font-size:1.75rem">{circuit.turnCount}</dd></div>
+            <div class="stat"><dt style="color:var(--slate-600)">DRS zones</dt><dd style="font-size:1.75rem">{circuit.drsZones}</dd></div>
+            <div class="stat" style="grid-column:1/-1">
+              <dt style="color:var(--slate-600)">Lap record</dt>
+              <dd style="font-size:1.75rem">{circuit.lapRecord.time} <span style="font-size:1rem;color:var(--slate-600)">— {circuit.lapRecord.driver}, {circuit.lapRecord.year}</span></dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="page-section page-section--dark">
+    <div class="page-section-inner">
+      <div class="section-head"><h2 class="section-title">Weekend schedule</h2></div>
+      <table class="data-table">
+        <thead><tr><th>Session</th><th>Start (local)</th><th>Countdown</th></tr></thead>
+        <tbody>
+          {schedule.map((s) => (
+            <tr style={s.main ? "color:var(--cyan)" : ""}>
+              <td>{s.session}</td>
+              <td>{s.when.toLocaleString("en-GB", { weekday: "short", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}</td>
+              <td>{s.main ? "● Race day" : ""}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p style="margin-top:2.5rem;color:var(--foreground-on-dark-muted);text-transform:none;">
+        {driver.firstName} arrives at {nextRace.circuit} #{driver.number} — full weekend coverage in the
+        <a href="/journal" style="color:var(--cyan)">journal</a>.
+      </p>
+    </div>
+  </section>
+
+  <script>
+    import { bindCountdown } from "../lib/countdown";
+    const root = document.querySelector<HTMLElement>("#countdown");
+    if (root) {
+      const start = root.dataset.raceStart;
+      if (start) bindCountdown(root, start);
+    }
+  </script>
+</BaseLayout>

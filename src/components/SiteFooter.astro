@@ -1,0 +1,39 @@
+---
+/**
+ * Footer panel: cyan frame, dark inner panel, nav, figure + helmet art,
+ * legal CTA and socials. Runs on every page.
+ */
+import { getDriver } from "../lib/api";
+
+const driver = getDriver();
+const year = new Date().getFullYear();
+---
+
+<footer class="footer" aria-labelledby="footer-title">
+  <div class="footer-panel">
+    <canvas class="footer-contour" data-contour data-contour-color="#ffffff" aria-hidden="true"></canvas>
+  </div>
+  <div class="footer-logo" role="img" aria-label="GRIDO1 Racing Systems">GRIDO1</div>
+  <h2 class="display footer-title" id="footer-title" data-reveal="words" data-i18n-reveal="footer.titleLines" data-period="true">
+    Keep pushing<br />forward.
+  </h2>
+  <nav class="footer-nav" aria-label="Footer navigation">
+    <a href="/driver" data-i18n="nav.driver">Driver</a>
+    <a href="/season" data-i18n="nav.season">Season</a>
+    <a href="/journal" data-i18n="nav.journal">Journal</a>
+    <a href="/next-race" data-i18n="nav.nextRace">Next race</a>
+    <a href="/store" data-i18n="nav.store">Store</a>
+  </nav>
+  <div class="footer-bottom">
+    <span data-i18n="footer.rights">© {year} GRIDO1 Racing Systems. All rights reserved.</span>
+    <a class="cta cta--outline legal-cta" href="/legal">
+      <span data-i18n="footer.legal">Legal documents</span>
+      <svg viewBox="0 0 13.71 10.71" fill="none" aria-hidden="true"><path d="M0 5.35h13M8 10.35l5-5-5-5" stroke="currentColor"/></svg>
+    </a>
+    <nav class="socials" aria-label="Social media">
+      {driver.socials.map((social) => (
+        <a href={social.href} rel="noopener noreferrer" target="_blank">{social.label}</a>
+      ))}
+    </nav>
+  </div>
+</footer>

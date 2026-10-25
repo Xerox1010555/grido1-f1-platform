@@ -1,0 +1,72 @@
+{
+  "circuits": [
+    {
+      "slug": "spa",
+      "name": "Circuit de Spa-Francorchamps",
+      "country": "Belgium",
+      "countryCode": "BE",
+      "lengthKm": 7.004,
+      "laps": 44,
+      "lapRecord": { "time": "1:46.286", "driver": "Valtteri Bottas", "year": 2018 },
+      "drsZones": 2,
+      "turnCount": 19,
+      "svgPath": "M130 360C170 310 170 225 238 208C298 193 323 250 367 250C425 250 440 164 493 149C545 134 594 172 643 145C701 112 754 139 760 198C767 262 702 294 646 280C582 264 540 223 499 250C455 278 466 346 522 361C574 376 620 334 670 342C728 351 749 411 709 447C664 488 597 452 555 465C498 483 485 535 421 536C359 537 339 478 286 477C232 476 216 521 163 499C107 476 92 407 130 360Z",
+      "turnMarkers": [
+        { "x": 238, "y": 208, "label": "T1 La Source" },
+        { "x": 493, "y": 149, "label": "T5 Les Combes" },
+        { "x": 760, "y": 198, "label": "T10 Pouhon" },
+        { "x": 421, "y": 536, "label": "T18 Blanchimont" }
+      ]
+    },
+    {
+      "slug": "hungaroring",
+      "name": "Hungaroring",
+      "country": "Hungary",
+      "countryCode": "HU",
+      "lengthKm": 4.381,
+      "laps": 70,
+      "lapRecord": { "time": "1:16.627", "driver": "Lewis Hamilton", "year": 2020 },
+      "drsZones": 2,
+      "turnCount": 14,
+      "svgPath": "M180 420C160 350 200 300 260 290C320 280 340 330 400 320C460 310 470 230 540 220C610 210 700 250 720 310C740 370 680 420 620 430C560 440 520 400 460 410C400 420 380 480 320 490C260 500 200 490 180 420Z",
+      "turnMarkers": [
+        { "x": 260, "y": 290, "label": "T1" },
+        { "x": 540, "y": 220, "label": "T6" },
+        { "x": 720, "y": 310, "label": "T11" }
+      ]
+    },
+    {
+      "slug": "zandvoort",
+      "name": "Circuit Zandvoort",
+      "country": "Netherlands",
+      "countryCode": "NL",
+      "lengthKm": 4.259,
+      "laps": 72,
+      "lapRecord": { "time": "1:11.097", "driver": "Lewis Hamilton", "year": 2021 },
+      "drsZones": 2,
+      "turnCount": 14,
+      "svgPath": "M150 480C130 400 170 330 240 300C310 270 350 320 420 300C490 280 500 200 570 190C640 180 730 220 740 290C750 360 690 400 630 420C570 440 540 490 470 500C400 510 340 470 280 480C220 490 170 540 150 480Z",
+      "turnMarkers": [
+        { "x": 240, "y": 300, "label": "T3 Hugenholtz" },
+        { "x": 570, "y": 190, "label": "T11" }
+      ]
+    },
+    {
+      "slug": "monza",
+      "name": "Autodromo Nazionale Monza",
+      "country": "Italy",
+      "countryCode": "IT",
+      "lengthKm": 5.793,
+      "laps": 53,
+      "lapRecord": { "time": "1:21.046", "driver": "Rubens Barrichello", "year": 2004 },
+      "drsZones": 2,
+      "turnCount": 11,
+      "svgPath": "M200 520L200 180C200 140 240 120 280 140L520 260C560 280 600 270 620 240L700 140C730 100 780 120 760 170L640 420C620 470 580 500 520 510L260 540C220 545 200 540 200 520Z",
+      "turnMarkers": [
+        { "x": 280, "y": 140, "label": "T1 Variante del Rettifilo" },
+        { "x": 760, "y": 170, "label": "T4 Variante della Roggia" },
+        { "x": 520, "y": 510, "label": "Ascari" }
+      ]
+    }
+  ]
+}

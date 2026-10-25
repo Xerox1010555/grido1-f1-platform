@@ -1,0 +1,142 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getProducts } from "../../lib/api";
+
+const products = getProducts();
+---
+
+<BaseLayout
+  title="Store — GRIDO1 Racing Systems"
+  description="Official GRIDO1 merchandise: team cap, rookie season hoodie, diecast models and circuit prints."
+>
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <p class="page-eyebrow">Official merch</p>
+      <h1 class="page-title">Store<span class="period">.</span></h1>
+      <p class="page-lead">Team kit and collectibles from the 2026 season. Checkout secured by Stripe.</p>
+      <p style="margin-top:2rem;">
+        <button class="cta" id="cart-open" type="button" aria-controls="cart-drawer">
+          <span>Cart (<span id="cart-count">0</span>)</span>
+          <svg viewBox="0 0 13.71 10.71" fill="none" aria-hidden="true"><path d="M0 5.35h13M8 10.35l5-5-5-5" stroke="currentColor" /></svg>
+        </button>
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="page-section-inner">
+      <div class="card-grid">
+        {products.map((product) => (
+          <a class="card" href={`/store/${product.slug}`}>
+            <div class="card-body">
+              <span class="card-eyebrow">{product.tagline}</span>
+              <h2 class="card-title">{product.name}</h2>
+              <p class="card-text" style="font-weight:700;color:var(--ink-950)">${product.price}.00 {product.currency}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Cart drawer -->
+  <aside id="cart-drawer" class="cart-drawer glass-dark" aria-label="Shopping cart" hidden>
+    <div class="cart-head">
+      <h2 class="section-title" style="font-size:1.5rem">Cart</h2>
+      <button id="cart-close" type="button" aria-label="Close cart">×</button>
+    </div>
+    <ul id="cart-items"></ul>
+    <div class="cart-total">
+      <span>Total</span><span id="cart-total">$0.00</span>
+    </div>
+    <button class="cta" id="cart-checkout" type="button">
+      <span>Checkout</span>
+      <svg viewBox="0 0 13.71 10.71" fill="none" aria-hidden="true"><path d="M0 5.35h13M8 10.35l5-5-5-5" stroke="currentColor" /></svg>
+    </button>
+    <p id="cart-note" hidden>
+      Demo checkout — configure STRIPE_PAYMENT_LINK in src/data/products.json to enable live payments.
+    </p>
+  </aside>
+
+  <script>
+    // Client-side cart (localStorage) + Stripe Payment Link redirect when configured.
+    import { getProducts } from "../../lib/api";
+    const products = getProducts();
+    const KEY = "grido1:cart";
+
+    const read = (): Record<string, number> => {
+      try { return JSON.parse(localStorage.getItem(KEY) || "{}"); } catch { return {}; }
+    };
+    const write = (cart: Record<string, number>) => {
+      localStorage.setItem(KEY, JSON.stringify(cart));
+      render();
+    };
+
+    const itemsEl = document.querySelector<HTMLElement>("#cart-items");
+    const totalEl = document.querySelector<HTMLElement>("#cart-total");
+    const countEl = document.querySelector<HTMLElement>("#cart-count");
+    const noteEl = document.querySelector<HTMLElement>("#cart-note");
+
+    function render(): void {
+      const cart = read();
+      const entries = Object.entries(cart).filter(([, qty]) => qty > 0);
+      if (countEl) countEl.textContent = String(entries.reduce((sum, [, q]) => sum + q, 0));
+      if (!itemsEl || !totalEl) return;
+      itemsEl.innerHTML = "";
+      let total = 0;
+      for (const [slug, qty] of entries) {
+        const product = products.find((p) => p.slug === slug);
+        if (!product) continue;
+        total += product.price * qty;
+        const li = document.createElement("li");
+        li.style.display = "flex";
+        li.style.justifyContent = "space-between";
+        li.style.gap = "1rem";
+        const name = document.createElement("span");
+        name.textContent = `${product.name} × ${qty}`;
+        const price = document.createElement("span");
+        price.textContent = `$${(product.price * qty).toFixed(2)}`;
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.textContent = "Remove";
+        remove.style.cssText = "background:none;border:0;color:var(--cyan);cursor:pointer;font-size:.75rem;";
+        remove.addEventListener("click", () => {
+          const next = { ...read() };
+          delete next[slug];
+          write(next);
+        });
+        li.append(name, price, remove);
+        itemsEl.append(li);
+      }
+      totalEl.textContent = `$${total.toFixed(2)}`;
+    }
+
+    document.querySelectorAll<HTMLButtonElement>("[data-add-to-cart]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const slug = btn.dataset.addToCart;
+        if (!slug) return;
+        const cart = read();
+        cart[slug] = (cart[slug] || 0) + 1;
+        write(cart);
+        document.querySelector<HTMLElement>("#cart-drawer")?.removeAttribute("hidden");
+      });
+    });
+
+    const drawer = document.querySelector<HTMLElement>("#cart-drawer");
+    document.querySelector("#cart-open")?.addEventListener("click", () => drawer?.removeAttribute("hidden"));
+    document.querySelector("#cart-close")?.addEventListener("click", () => drawer?.setAttribute("hidden", ""));
+
+    document.querySelector("#cart-checkout")?.addEventListener("click", () => {
+      const cart = read();
+      const first = Object.keys(cart)[0];
+      const product = products.find((p) => p.slug === first);
+      if (product?.stripePaymentLink) {
+        window.location.href = product.stripePaymentLink;
+      } else if (noteEl) {
+        noteEl.hidden = false;
+      }
+    });
+
+    render();
+  </script>
+</BaseLayout>

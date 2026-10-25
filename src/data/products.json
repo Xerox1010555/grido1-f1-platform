@@ -1,0 +1,65 @@
+[
+  {
+    "slug": "amer-cap-012",
+    "name": "AMER Team Cap 012",
+    "tagline": "The paddock standard — cyan on ink.",
+    "price": 39,
+    "currency": "USD",
+    "image": "/assets/hero/ui/grido1-logo.webp",
+    "imageAlt": "AMER team cap with cyan embroidery",
+    "badge": "New",
+    "description": [
+      "Structured six-panel cap in ink black with cyan AMER embroidery.",
+      "Adjustable metal buckle, embroidered driver code AMR on the side panel.",
+      "One size, moisture-wicking inner band."
+    ],
+    "stripePaymentLink": ""
+  },
+  {
+    "slug": "season-hoodie-2026",
+    "name": "Season 2026 Hoodie",
+    "tagline": "Heavyweight fleece, season graphics.",
+    "price": 89,
+    "currency": "USD",
+    "image": "/assets/timeline/2026.webp",
+    "imageAlt": "Season hoodie with 2026 back graphic",
+    "description": [
+      "450gsm heavyweight cotton fleece, ink black.",
+      "Full-season results printed on the back, driver number 12 on the chest.",
+      "Unisex fit — size down for a cropped cut."
+    ],
+    "sizes": ["XS", "S", "M", "L", "XL", "XXL"],
+    "stripePaymentLink": ""
+  },
+  {
+    "slug": "f10-124-diecast",
+    "name": "BMW F10 535i — 1:24 Diecast",
+    "tagline": "Suzuka-winning spec, numbered edition.",
+    "price": 149,
+    "currency": "USD",
+    "image": "/assets/hero/scene/helmet3.glb",
+    "imageAlt": "1:24 scale diecast of the BMW F10 535i",
+    "badge": "Limited",
+    "description": [
+      "1:24 scale resin model of the F10 in Suzuka-winning trim.",
+      "Numbered edition of 2,026 pieces with certificate.",
+      "Display base with circuit plaque included."
+    ],
+    "stripePaymentLink": ""
+  },
+  {
+    "slug": "spa-circuit-print",
+    "name": "Spa-Francorchamps Circuit Print",
+    "tagline": "A2 giclée, cyan line work.",
+    "price": 59,
+    "currency": "USD",
+    "image": "/assets/hero/ui/circuit-spa.webp",
+    "imageAlt": "Spa-Francorchamps circuit line-work print",
+    "description": [
+      "A2 giclée print on 300gsm matte stock.",
+      "Cyan line work on ink black, turn markers in metallic cyan.",
+      "Shipped rolled in a rigid tube."
+    ],
+    "stripePaymentLink": ""
+  }
+]

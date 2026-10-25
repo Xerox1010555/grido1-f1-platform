@@ -1,0 +1,125 @@
+---
+/**
+ * Global site chrome shared by every page: SEO head, header, footer, mobile
+ * sheet, loader (homepage opts in via `withLoader`), cookie banner, and the
+ * site-wide runtime (i18n, mobile menu, consent, image tracking, canvas FX).
+ */
+import "../styles/global.css";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import MobileSheet from "../components/MobileSheet.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Render the loading overlay + footer (homepage only). */
+  withLoader?: boolean;
+  mainClass?: string;
+}
+
+const { title, description, withLoader = false, mainClass = "page-shell" } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://grido1.example.com").href;
+const ogImage = new URL("/assets/hero/ui/grido1-logo.webp", Astro.site ?? "https://grido1.example.com").href;
+---
+
+<!doctype html>
+<html lang="en" dir="ltr" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f7fafb" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="GRIDO1 Racing Systems" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          name: "AMER",
+          jobTitle: "Racing Driver",
+          memberOf: { "@type": "SportsTeam", name: "AMER RACING" },
+          url: canonical,
+        },
+        {
+          "@type": "WebSite",
+          name: "GRIDO1 Racing Systems",
+          url: canonical,
+        },
+      ],
+    })} />
+
+    <!-- Critical inline: drop no-js class as early as possible -->
+    <script is:inline>document.documentElement.classList.remove("no-js");</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main" data-i18n="skip.content">Skip to content</a>
+
+    {withLoader && (
+      <>
+        <div class="loader" id="loader" role="status" aria-label="Loading Grido1 Racing Systems" data-loaded-label="Loaded">
+          <div class="loader-content">
+            <div class="loader-shell" aria-hidden="true"></div>
+            <p class="loader-name">AMER</p>
+          </div>
+          <div class="loader-meter" aria-hidden="true"><span></span></div>
+        </div>
+        <div class="asset-error" id="asset-error" role="alert" hidden></div>
+      </>
+    )}
+
+    <div class={mainClass} id="page">
+      <SiteHeader />
+      <slot />
+    </div>
+
+    <SiteFooter />
+
+    <MobileSheet />
+
+    <!-- Cookie consent (consent-gated analytics) -->
+    <div id="cookie-banner" class="cookie-banner glass-dark" role="dialog" aria-label="Cookie consent" hidden>
+      <span>We use cookies for analytics — only with your consent.</span>
+      <button id="cookie-accept" class="cta" type="button">Accept</button>
+      <button id="cookie-decline" class="cta cta--outline" type="button">Decline</button>
+    </div>
+
+    <!-- Site-wide runtime (bundled by Astro; no CDN) -->
+    <script>
+      import { initI18n } from "../lib/i18n";
+      import { initMobileMenu } from "../lib/menu";
+      import { initConsent } from "../lib/consent";
+      import { trackAllImages, installAssetFallback } from "../lib/assets";
+      import { initCanvasEffects } from "../lib/canvasFx";
+      import { initReveals } from "../lib/reveal";
+      import { initTilt } from "../lib/tilt";
+      import { initCarousel } from "../lib/carousel";
+
+      installAssetFallback();
+      initI18n();
+      initMobileMenu();
+      initConsent();
+      trackAllImages();
+      initCanvasEffects();
+      initReveals();
+      initTilt();
+      document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((root) => initCarousel(root));
+    </script>
+  </body>
+</html>

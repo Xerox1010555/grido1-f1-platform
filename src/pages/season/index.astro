@@ -1,0 +1,137 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getResults, getSeason, getSeasonStats, getUpcoming, getNextRace, getDriver } from "../../lib/api";
+
+const driver = getDriver();
+const stats = getSeasonStats();
+const season = getSeason();
+const results = getResults(); // newest first
+const upcoming = getUpcoming();
+const nextRace = getNextRace();
+
+// Cumulative points progression (oldest → newest) for the SVG chart.
+let cumulative = 0;
+const progression = [...season.results]
+  .sort((a, b) => a.round - b.round)
+  .map((r) => {
+    cumulative += r.points;
+    return { round: r.round, gp: r.gpName, points: cumulative };
+  });
+const maxPoints = Math.max(stats.points, 1);
+const chartW = 960;
+const chartH = 320;
+const padX = 40;
+const padY = 24;
+const x = (i: number) => padX + (i / Math.max(1, progression.length - 1)) * (chartW - padX * 2);
+const y = (p: number) => chartH - padY - (p / maxPoints) * (chartH - padY * 2);
+const linePoints = progression.map((p, i) => `${x(i).toFixed(1)},${y(p.points).toFixed(1)}`).join(" ");
+const areaPoints = `${padX},${chartH - padY} ${linePoints} ${x(progression.length - 1).toFixed(1)},${chartH - padY}`;
+---
+
+<BaseLayout
+  title={`Season ${stats.year} — ${driver.name} | GRIDO1 Racing Systems`}
+  description={`${driver.name}'s ${stats.year} season in the ${stats.car}: P${stats.position} with ${stats.points} points, ${stats.wins} wins and ${stats.podiums} podiums across ${stats.races} races.`}
+>
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <p class="page-eyebrow">{stats.team} — {stats.car}</p>
+      <h1 class="page-title">The season<br /><span class="period">{stats.year}.</span></h1>
+      <dl class="stat-row" style="margin-top:3rem;">
+        <div class="stat"><dt>Championship</dt><dd>P{stats.position}</dd></div>
+        <div class="stat"><dt>Races</dt><dd>{stats.races}</dd></div>
+        <div class="stat"><dt>Wins</dt><dd>{stats.wins}</dd></div>
+        <div class="stat"><dt>Podiums</dt><dd>{stats.podiums}</dd></div>
+        <div class="stat"><dt>Points</dt><dd>{stats.points}</dd></div>
+        <div class="stat"><dt>DNFs</dt><dd>{stats.dnfs}</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Points progression -->
+  <section class="page-section">
+    <div class="page-section-inner">
+      <div class="section-head">
+        <h2 class="section-title">Points progression</h2>
+        <span class="card-eyebrow">After {stats.races} rounds — P1, +{stats.leadGapToP2} to P2</span>
+      </div>
+      <svg viewBox={`0 0 ${chartW} ${chartH}`} style="width:100%;height:auto;border:1px solid var(--border-muted);" role="img" aria-label={`Cumulative points after ${stats.races} rounds, ending on ${stats.points}`}>
+        {[0, 0.25, 0.5, 0.75, 1].map((f) => (
+          <line x1={padX} x2={chartW - padX} y1={y(maxPoints * f)} y2={y(maxPoints * f)} stroke="var(--ice-200)" stroke-dasharray="4 6" />
+        ))}
+        <polygon points={areaPoints} fill="var(--cyan-25)" />
+        <polyline points={linePoints} fill="none" stroke="var(--cyan)" stroke-width="3" />
+        {progression.map((p, i) => (
+          <circle cx={x(i)} cy={y(p.points)} r="4" fill="var(--ink-950)">
+            <title>{`R${p.round} ${p.gp}: ${p.points} pts`}</title>
+          </circle>
+        ))}
+        <text x={padX} y={18} font-size="12" fill="var(--slate-600)">{stats.points} pts</text>
+        <text x={x(progression.length - 1) - 30} y={chartH - 6} font-size="12" fill="var(--slate-600)">R{progression.at(-1)?.round}</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Championship standings -->
+  <section class="page-section page-section--dark">
+    <div class="page-section-inner">
+      <div class="section-head"><h2 class="section-title">Championship standings</h2></div>
+      <table class="data-table">
+        <thead>
+          <tr><th>Pos</th><th>Driver</th><th>Team</th><th style="text-align:right">Points</th></tr>
+        </thead>
+        <tbody>
+          {season.rivals.map((rival) => (
+            <tr>
+              <td class={rival.position === 1 ? "pos-win" : ""}>P{rival.position}</td>
+              <td>{rival.name}</td>
+              <td>{rival.team}</td>
+              <td style="text-align:right">{rival.points}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Race-by-race results -->
+  <section class="page-section page-section--dark" style="padding-top:0;">
+    <div class="page-section-inner">
+      <div class="section-head"><h2 class="section-title">Race by race</h2></div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Rnd</th><th>Grand Prix</th><th>Grid</th><th>Finish</th><th>Pts</th><th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {results.map((r) => (
+            <tr>
+              <td>{r.round}</td>
+              <td>{r.gpName}<br /><span class="card-eyebrow">{new Date(r.date).toUTCString().slice(5, 16)}</span></td>
+              <td>P{r.gridPosition}</td>
+              <td>
+                {r.status === "dnf" ? (
+                  <span class="status-dnf">DNF</span>
+                ) : (
+                  <span class={r.finishPosition === 1 ? "pos-win" : ""}>P{r.finishPosition}</span>
+                )}
+              </td>
+              <td>{r.points}</td>
+              <td style="text-transform:none;color:var(--foreground-on-dark-muted)">{r.note ?? ""}</td>
+            </tr>
+          ))}
+          {upcoming.slice(0, 3).map((r) => (
+            <tr style="opacity:.6">
+              <td>{r.round}</td>
+              <td>{r.gpName}{r.round === nextRace.round ? ' <span class="pos-win">● NEXT</span>' : ""}</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td><a href="/next-race" style="color:var(--cyan)">Preview →</a></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</BaseLayout>

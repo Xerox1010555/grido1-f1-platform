@@ -1,0 +1,25 @@
+---
+/** Full-screen mobile navigation sheet with focus trap. */
+const links = [
+  { href: "/driver", label: "Driver", key: "nav.driver" },
+  { href: "/season", label: "Season", key: "nav.season" },
+  { href: "/journal", label: "Journal", key: "nav.journal" },
+  { href: "/next-race", label: "Next race", key: "nav.nextRace" },
+  { href: "/store", label: "Store", key: "nav.store" },
+  { href: "/garage", label: "Garage", key: "nav.garage" },
+];
+---
+
+<nav class="mobile-sheet" id="mobile-sheet" role="dialog" aria-modal="true" aria-label="Mobile navigation" aria-hidden="true">
+  <div class="sheet-head">
+    <a class="brand" href="/" aria-label="Grido1 Racing Systems">
+      <img src="/assets/hero/ui/grido1-logo.webp" alt="GRIDO1 Racing Systems" width="112" height="32" />
+    </a>
+    <button class="sheet-close" id="menu-close" type="button" aria-label="Close menu"></button>
+  </div>
+  <div class="sheet-links">
+    {links.map((link) => (
+      <a href={link.href} data-i18n={link.key}>{link.label}</a>
+    ))}
+  </div>
+</nav>

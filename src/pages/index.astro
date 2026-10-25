@@ -1,0 +1,220 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import StoriesCarousel from "../components/StoriesCarousel.astro";
+import {
+  getCalendarStrip,
+  getDriver,
+  getSeasonStats,
+  getTimeline,
+  getNextRace,
+  getCircuit,
+  getPosts,
+} from "../lib/api";
+
+const driver = getDriver();
+const stats = getSeasonStats();
+const nextRace = getNextRace();
+const circuit = getCircuit(nextRace.circuitSlug);
+const timeline = getTimeline();
+const latestPost = getPosts()[0];
+const calendar = getCalendarStrip();
+const pad = (n: number) => String(n).padStart(2, "0");
+const dateLabel = (iso: string) => {
+  const d = new Date(iso);
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return `${pad(d.getUTCDate())} ${months[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+};
+---
+
+<BaseLayout
+  title="AMER — GRIDO1 RACING SYSTEMS"
+  description="AMER — GRIDO1 Racing Systems. Driver profile and 2026 season."
+  withLoader
+  mainClass="page-home"
+>
+  <div class="stack">
+    <!-- ================= HERO ================= -->
+    <section class="sheet pinned hero" data-hero aria-labelledby="hero-title">
+      <div class="recede-inner">
+        <div class="hero-art" aria-hidden="true">
+          <img class="hero-backdrop" src="/assets/hero/ui/backdrop-lines.svg" alt="" />
+          <picture>
+            <source srcset="/assets/me.avif" type="image/avif" />
+            <source srcset="/assets/me.webp" type="image/webp" />
+            <img class="hero-photo" src="/assets/me.png" alt="" fetchpriority="high" width="1402" height="1122" />
+          </picture>
+          <canvas class="hero-contour" data-contour data-contour-color="#ebeef1"></canvas>
+          <canvas class="helmet-scene" id="helmet-scene"></canvas>
+        </div>
+
+        <div class="hero-middle">
+          <div class="identity">
+            <div>
+              <div class="driver-id">{driver.id}</div>
+              <h1 class="display hero-name" id="hero-title" data-reveal="words" data-i18n-reveal="hero.name">
+                {driver.firstName}
+              </h1>
+            </div>
+            <ul class="meta-list" aria-label="Driver details">
+              <li>
+                <img src="/assets/hero/ui/icon-rookie.svg" alt="" width="16" height="16" />
+                <span data-i18n="hero.rookie">Rookie season</span>_{stats.year}
+              </li>
+              <li>{driver.team}</li>
+            </ul>
+          </div>
+
+          <aside class="hero-panels" aria-label="Driver overview">
+            <section class="bracket-panel glass" data-tilt="6">
+              <svg class="corners" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 10V0H10M90 0H100V10M100 90V100H90M10 100H0V90" vector-effect="non-scaling-stroke"/></svg>
+              <div class="panel-label" data-i18n="hero.nextRace">Next race</div>
+              <dl class="race-details">
+                <dt>{nextRace.gpName}</dt>
+                <dd>{nextRace.circuit}</dd>
+                <dd><time datetime={nextRace.startsAt}>{dateLabel(nextRace.startsAt)}</time></dd>
+              </dl>
+              {circuit && <img class="race-map" src="/assets/hero/ui/circuit-spa.webp" alt={`${circuit.name} circuit layout`} width="78" height="50" />}
+            </section>
+            <section class="bracket-panel glass" data-tilt="6">
+              <svg class="corners" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 10V0H10M90 0H100V10M100 90V100H90M10 100H0V90" vector-effect="non-scaling-stroke"/></svg>
+              <div class="panel-label" data-i18n="hero.seasonStats">Season stats</div>
+              <dl class="hero-stats">
+                <div><dt data-i18n="hero.races">Races</dt><dd data-reveal="letters">{stats.races}</dd></div>
+                <div><dt data-i18n="hero.podiums">Podiums</dt><dd data-reveal="letters">{stats.podiums}</dd></div>
+                <div><dt data-i18n="hero.points">Points</dt><dd data-reveal="letters">{stats.points}</dd></div>
+              </dl>
+            </section>
+          </aside>
+        </div>
+
+        <div class="hero-actions">
+          <a class="trailer" href="/journal/first-victory-suzuka">
+            <img src="/assets/hero/ui/play-button.svg" alt="" width="32" height="32" />
+            <span><span data-i18n="hero.watchTrailer">Watch trailer</span><small>01:26</small></span>
+          </a>
+          <a class="profile-cta" href={`/driver/${driver.slug}`}>
+            <svg class="cta-frame" viewBox="0 0 220 50" preserveAspectRatio="none" aria-hidden="true"><path d="M220 42L212.932 50H0V0H220V42Z" fill="currentColor" opacity=".25"/><path d="M220 42L212.932 50H0V0H220V42Z" fill="none" stroke="var(--cyan)" stroke-opacity=".35"/><path d="M205 49.5H213L219.5 42V36M212 0.5H219.5V7M8 0.5H.5V7M7.5 49.5H.5V42.5" fill="none" stroke="var(--cyan)"/></svg>
+            <span data-i18n="hero.viewProfile">View profile</span>
+            <svg viewBox="0 0 13.7071 10.7071" fill="none" aria-hidden="true"><path d="M0 5.35355H13M8 10.3536L13 5.35355L8 .353553" stroke="currentColor"/></svg>
+          </a>
+          <nav class="socials" aria-label="Social media">
+            {driver.socials.map((social) => (
+              <a href={social.href} rel="noopener noreferrer" target="_blank">{social.label === "Instagram" ? "Inst" : social.label === "YouTube" ? "Youtube" : social.label}</a>
+            ))}
+          </nav>
+        </div>
+      </div>
+      <div class="shade" aria-hidden="true"></div>
+    </section>
+
+    <!-- ================= SEASON ================= -->
+    <section class="sheet pinned pinned--season season" id="season" data-season aria-labelledby="season-title">
+      <div class="recede-inner">
+        <div class="season-art" aria-hidden="true"></div>
+        <canvas class="checker-seam" data-checker data-carry="light" aria-hidden="true"></canvas>
+        <div class="circuit" id="circuit" aria-hidden="true">
+          <canvas class="map-halftone"></canvas>
+          <svg viewBox="0 0 900 600" preserveAspectRatio="xMidYMid meet">
+            <g class="map-grid" fill="none">
+              <path d="M210 0V600M430 0V600M650 0V600M0 320H900" />
+              <circle cx="560" cy="320" r="24" /><circle class="outer-ring" cx="560" cy="320" r="128" /><circle class="outer-ring" cx="560" cy="320" r="160" />
+              <circle class="map-ping" cx="560" cy="320" r="14" />
+            </g>
+            {circuit && (
+              <>
+                <path d={circuit.svgPath} fill="none" stroke="none" />
+                <path class="track" d={circuit.svgPath} />
+                {circuit.turnMarkers.map((marker) => (
+                  <circle class="turn-marker" cx={marker.x} cy={marker.y} r="7" />
+                ))}
+              </>
+            )}
+          </svg>
+          <span class="map-reticle" aria-hidden="true"></span>
+        </div>
+        <div class="season-grid">
+          <div>
+            <h2 class="display wordline season-title" id="season-title" data-reveal="words" data-i18n-reveal="season.titleLines" data-period="true">
+              The season<br />so far.
+            </h2>
+            <div class="cyan-rule" aria-hidden="true"></div>
+            <p class="season-intro" data-i18n="season.intro">Every race is a step forward. Here's how the season is shaping up.</p>
+          </div>
+          <div class="standings glass-dark" data-tilt="5" aria-label="Season standings">
+            <svg class="frame" viewBox="0 0 277 78" preserveAspectRatio="none" aria-hidden="true"><path d="M.5 .5H276.5V69L268 77.5H.5Z" /><path d="M83 1V77" fill="none" stroke="var(--cyan)" stroke-width="1" /></svg>
+            <div class="standings-badge">
+              <svg viewBox="0 0 37 23" fill="none" aria-hidden="true"><ellipse cx="18.5" cy="11.5" rx="18" ry="11" stroke="var(--cyan)" /><path d="M.5 11.5h36" stroke="var(--cyan)" /><ellipse cx="18.5" cy="11.5" rx="7" ry="11" stroke="var(--cyan)" /></svg>
+              <strong>TT <span style="color:var(--cyan)">/ {stats.year}</span></strong>
+            </div>
+            <div class="standings-copy">
+              <div><b>P{stats.position}</b><span data-i18n="season.inChampionship">In the championship</span></div>
+              <div><b>{stats.wins}</b><span data-i18n="season.wins">Wins</span></div>
+              <div><b>{stats.podiums}</b><span data-i18n="season.podiumsLabel">Podiums.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="shade" aria-hidden="true"></div>
+    </section>
+
+    <!-- ================= CAREER TIMELINE ================= -->
+    <section class="timeline" aria-labelledby="timeline-title">
+      <canvas class="checker-seam" data-checker data-carry="light" aria-hidden="true"></canvas>
+      <h2 class="display timeline-head" id="timeline-title" data-reveal="words" data-i18n-reveal="timeline.titleLines" data-period="true">
+        From karts<br />to the top.
+      </h2>
+      <div class="timeline-wrap">
+        <div class="timeline-rail" aria-hidden="true"></div>
+        {timeline.map((entry) => (
+          <article class:list={["timeline-row", { side: !entry.featured }]} data-timeline-row>
+            <div class="year" data-reveal="letters">{entry.year}</div>
+            <div class="timeline-plate"><img src={entry.image} alt={entry.alt} loading="lazy" width="640" height="457" /></div>
+            {entry.featured && (
+              <div class="timeline-copy"><strong>{entry.title}</strong><p>{entry.body}</p></div>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+  </div>
+
+  <!-- ================= STORIES (VIP glass carousel) ================= -->
+  <StoriesCarousel />
+
+  <!-- ================= PADDOCK ================= -->
+  <section class="paddock" id="paddock" aria-labelledby="paddock-title">
+    <canvas class="paddock-contour" data-contour data-contour-color="#090a0b" aria-hidden="true"></canvas>
+    <div class="paddock-band" aria-hidden="true"></div>
+    <img class="paddock-portrait" src="/assets/paddock/portrait.webp" alt="AMER in the paddock" loading="lazy" width="752" height="650" />
+    <div class="paddock-fade" aria-hidden="true"></div>
+    <canvas class="checker-seam" data-checker data-carry="dark" aria-hidden="true"></canvas>
+    <h2 class="display paddock-title" id="paddock-title" data-reveal="words" data-i18n-reveal="paddock.titleLines" data-period="true">
+      From the<br />paddock.
+    </h2>
+    <div class="paddock-report glass" data-tilt="4">
+      <p>{latestPost?.excerpt}</p>
+      <a class="story-cta" href={`/journal/${latestPost?.slug}`}>
+        <span data-i18n="paddock.readStory">Read story</span>
+        <svg viewBox="0 0 13.71 10.71" fill="none" aria-hidden="true"><path d="M0 5.35h13M8 10.35l5-5-5-5" stroke="currentColor" /></svg>
+      </a>
+    </div>
+    <div class="calendar" aria-label="Race calendar">
+      <span class="calendar-line"></span><span class="calendar-line"></span><span class="calendar-line"></span><span class="calendar-line"></span>
+      <div class="live-bracket" aria-hidden="true"></div>
+      <div class="calendar-rounds">
+        {calendar.map((entry) => (
+          <div class:list={["round", { live: entry.state === "live" }]}>
+            <em>{entry.resultLabel}</em>
+            <strong>{entry.label}</strong>
+            <span>{entry.gpName}</span>
+            <small>{entry.dateLabel}</small>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import "../scripts/home.ts";
+  </script>
+</BaseLayout>

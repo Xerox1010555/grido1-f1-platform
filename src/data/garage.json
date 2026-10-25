@@ -1,0 +1,20 @@
+{
+  "name": "BMW F10 535i",
+  "code": "F10",
+  "powerUnit": "BMW N55 3.0L twin-scroll turbo inline-6",
+  "chassis": "Steel monocoque with M Sport bracing",
+  "weightKg": 1735,
+  "engine": "N55B30 3.0L inline-6 turbo, 300 hp @ 5800 rpm",
+  "energyRecovery": "Stop/start + efficient dynamics recuperation",
+  "gearbox": "8-speed ZF 8HP sport automatic",
+  "fuel": "Premium unleaded 95+",
+  "tyres": "Michelin Pilot Sport 4S — 18-inch",
+  "topSpeedKmh": 250,
+  "zeroToHundred": "5.2s",
+  "highlights": [
+    { "label": "Powerplant", "value": "300 hp", "detail": "N55 twin-scroll turbo, tuned with charge-pipe and intercooler upgrades." },
+    { "label": "Handling", "value": "M Sport", "detail": "Adaptive M suspension, coilovers and brace bars for flat cornering." },
+    { "label": "Braking", "value": "6-pot", "detail": "Big-brake kit with two-piece rotors — repeatable stops lap after lap." },
+    { "label": "Weight", "value": "1735 kg", "detail": "Stripped of excess trim, with a half cage and buckets for the track." }
+  ]
+}

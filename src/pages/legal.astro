@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const sections = [
+  {
+    title: "Privacy policy",
+    body: [
+      "GRIDO1 Racing Systems operates this driver-profile platform. We collect no personal data beyond what you voluntarily provide through the store checkout, which is processed by Stripe under their privacy policy.",
+      "Analytics cookies are only set after explicit consent via the cookie banner. Consent can be withdrawn at any time by clearing site data in your browser.",
+    ],
+  },
+  {
+    title: "Cookie policy",
+    body: [
+      "We use a single functional localStorage entry to remember your language preference (en/ar) and one to remember your cookie consent choice.",
+      "Third-party analytics (Google Analytics) load only after consent and are anonymized (IP anonymization enabled).",
+    ],
+  },
+  {
+    title: "Terms of use",
+    body: [
+      "This site is a design concept. Race results, statistics and editorial content represent a fictional 2026 season and do not constitute official motorsport information.",
+      "Merchandise checkout is a demo integration. Product names, imagery and pricing are illustrative.",
+    ],
+  },
+  {
+    title: "Legal notice",
+    body: [
+      "All design, code and original assets on this site are © GRIDO1 Racing Systems. BMW, M and related marks are the property of their respective owners and are used here in a concept context only.",
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Legal documents — GRIDO1 Racing Systems"
+  description="Privacy policy, cookie policy, terms of use and legal notice for the GRIDO1 Racing Systems platform."
+>
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <p class="page-eyebrow">Compliance</p>
+      <h1 class="page-title">Legal<br /><span class="period">documents.</span></h1>
+    </div>
+  </section>
+
+  {sections.map((section) => (
+    <section class="page-section" style="padding-block:3.5rem;">
+      <div class="page-section-inner prose">
+        <h2 style="margin-top:0">{section.title}</h2>
+        {section.body.map((p) => <p>{p}</p>)}
+      </div>
+    </section>
+  ))}
+</BaseLayout>

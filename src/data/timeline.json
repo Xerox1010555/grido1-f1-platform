@@ -1,0 +1,58 @@
+[
+  {
+    "year": 2012,
+    "title": "The first kart.",
+    "body": "At six, AMER discovered karting — turning a childhood curiosity into something of his own.",
+    "image": "/assets/timeline/2012.webp",
+    "alt": "AMER in kart overalls in the paddock, aged six",
+    "featured": true
+  },
+  {
+    "year": 2015,
+    "title": "Junior titles.",
+    "body": "Back-to-back regional karting championships turned promise into a reputation.",
+    "image": "/assets/timeline/2015.webp",
+    "alt": "AMER holding a karting trophy at sunset",
+    "featured": false
+  },
+  {
+    "year": 2019,
+    "title": "Finding his people.",
+    "body": "AMER joined a privateer race outfit, marking his first major step into professional motorsport.",
+    "image": "/assets/timeline/2019.webp",
+    "alt": "AMER signing with the junior team",
+    "featured": true
+  },
+  {
+    "year": 2021,
+    "title": "Touring cars.",
+    "body": "A dominant touring-car campaign proved the saloon, not the kart, was where AMER belonged.",
+    "image": "/assets/timeline/2021.webp",
+    "alt": "AMER beside a touring car in the garage",
+    "featured": false
+  },
+  {
+    "year": 2024,
+    "title": "The year everything changed.",
+    "body": "Time-attack brought AMER into the spotlight, while the team confirmed him as their lead driver.",
+    "image": "/assets/timeline/2024.webp",
+    "alt": "AMER walking the pit lane in team kit",
+    "featured": true
+  },
+  {
+    "year": 2025,
+    "title": "Building the F10.",
+    "body": "A full winter of developing the BMW F10 535i laid the foundation for a 2026 campaign.",
+    "image": "/assets/timeline/2025.webp",
+    "alt": "AMER in the garage beside the BMW F10",
+    "featured": false
+  },
+  {
+    "year": 2026,
+    "title": "From karts to the top.",
+    "body": "AMER is now racing at the sharp end, with the paddock still his anchor — family, home and life beyond racing.",
+    "image": "/assets/timeline/2026.webp",
+    "alt": "The BMW F10 535i on track",
+    "featured": true
+  }
+]

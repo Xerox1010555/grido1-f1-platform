@@ -1,0 +1,24 @@
+{
+  "upcoming": [
+    { "round": 13, "gpName": "Belgian GP",    "circuit": "Circuit de Spa-Francorchamps", "country": "Belgium",       "startsAt": "2026-07-27T13:00:00+02:00", "circuitSlug": "spa" },
+    { "round": 14, "gpName": "Hungarian GP",  "circuit": "Hungaroring",                  "country": "Hungary",       "startsAt": "2026-08-03T15:00:00+02:00", "circuitSlug": "hungaroring" },
+    { "round": 15, "gpName": "Dutch GP",      "circuit": "Circuit Zandvoort",            "country": "Netherlands",   "startsAt": "2026-08-31T15:00:00+02:00", "circuitSlug": "zandvoort" },
+    { "round": 16, "gpName": "Italian GP",    "circuit": "Autodromo Nazionale Monza",    "country": "Italy",         "startsAt": "2026-09-06T15:00:00+02:00", "circuitSlug": "monza" },
+    { "round": 17, "gpName": "Azerbaijan GP", "circuit": "Baku City Circuit",            "country": "Azerbaijan",    "startsAt": "2026-09-20T13:00:00+04:00", "circuitSlug": "baku" },
+    { "round": 18, "gpName": "Singapore GP",  "circuit": "Marina Bay Street Circuit",    "country": "Singapore",     "startsAt": "2026-10-04T20:00:00+08:00", "circuitSlug": "marina-bay" },
+    { "round": 19, "gpName": "United States GP", "circuit": "Circuit of the Americas",   "country": "USA",           "startsAt": "2026-10-18T14:00:00-05:00", "circuitSlug": "cota" },
+    { "round": 20, "gpName": "Mexico City GP", "circuit": "Autódromo Hermanos Rodríguez","country": "Mexico",        "startsAt": "2026-11-01T13:00:00-06:00", "circuitSlug": "mexico" },
+    { "round": 21, "gpName": "São Paulo GP",   "circuit": "Autódromo José Carlos Pace",   "country": "Brazil",        "startsAt": "2026-11-08T14:00:00-03:00", "circuitSlug": "interlagos" },
+    { "round": 22, "gpName": "Las Vegas GP",  "circuit": "Las Vegas Strip Circuit",      "country": "USA",           "startsAt": "2026-11-21T20:00:00-08:00", "circuitSlug": "las-vegas" },
+    { "round": 23, "gpName": "Qatar GP",      "circuit": "Lusail International Circuit","country": "Qatar",         "startsAt": "2026-12-06T18:00:00+03:00", "circuitSlug": "lusail" },
+    { "round": 24, "gpName": "Abu Dhabi GP",  "circuit": "Yas Marina Circuit",           "country": "UAE",           "startsAt": "2026-12-13T17:00:00+04:00", "circuitSlug": "yas-marina" }
+  ],
+  "sessionLabels": {
+    "fp1": "Practice 1",
+    "fp2": "Practice 2",
+    "fp3": "Practice 3",
+    "qualifying": "Qualifying",
+    "sprint": "Sprint",
+    "race": "Race"
+  }
+}

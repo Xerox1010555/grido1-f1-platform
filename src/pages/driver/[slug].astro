@@ -1,0 +1,92 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getDriver, getSeasonStats } from "../../lib/api";
+
+export function getStaticPaths() {
+  const driver = getDriver();
+  return [{ params: { slug: driver.slug } }];
+}
+
+const driver = getDriver();
+const stats = getSeasonStats();
+const born = new Date(driver.born);
+const age = Math.max(
+  0,
+  stats.year - born.getUTCFullYear() - (new Date().getUTCMonth() < born.getUTCMonth() ? 1 : 0),
+);
+const facts = [
+  { label: "Driver number", value: `#${driver.number}` },
+  { label: "Code", value: driver.driverIdCode },
+  { label: "Team", value: driver.team },
+  { label: "Car", value: "BMW F10 535i" },
+  { label: "Born", value: `${born.getUTCFullYear()} (${age})` },
+  { label: "Hometown", value: driver.hometown },
+  { label: "Height", value: `${driver.heightCm} cm` },
+  { label: "Status", value: driver.rookie ? "Rookie" : "Regular" },
+];
+---
+
+<BaseLayout
+  title={`${driver.name} — Full Profile | GRIDO1 Racing Systems`}
+  description={`Full profile of ${driver.name}: biography, ${stats.year} statistics, career facts and social links.`}
+>
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <p class="page-eyebrow">Full profile — {stats.year}</p>
+      <h1 class="page-title">{driver.firstName}</h1>
+      <p class="page-lead">{driver.bio}</p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="page-section-inner">
+      <div class="section-head">
+        <h2 class="section-title">Fact sheet</h2>
+        <nav class="page-nav"><a href="/season">Season stats →</a></nav>
+      </div>
+      <dl class="stat-row" style="color:var(--ink-950)">
+        {facts.map((fact) => (
+          <div class="stat">
+            <dt style="color:var(--slate-600)">{fact.label}</dt>
+            <dd style="font-size:1.75rem">{fact.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="page-section page-section--dark">
+    <div class="page-section-inner">
+      <div class="section-head">
+        <h2 class="section-title">{stats.year} at a glance</h2>
+      </div>
+      <dl class="stat-row">
+        <div class="stat"><dt>Championship</dt><dd>P{stats.position}</dd></div>
+        <div class="stat"><dt>Races</dt><dd>{stats.races}</dd></div>
+        <div class="stat"><dt>Wins</dt><dd>{stats.wins}</dd></div>
+        <div class="stat"><dt>Podiums</dt><dd>{stats.podiums}</dd></div>
+        <div class="stat"><dt>Poles</dt><dd>{stats.poles}</dd></div>
+        <div class="stat"><dt>Fastest laps</dt><dd>{stats.fastestLaps}</dd></div>
+        <div class="stat"><dt>Points</dt><dd>{stats.points}</dd></div>
+        <div class="stat"><dt>Lead to P2</dt><dd>+{stats.leadGapToP2}</dd></div>
+      </dl>
+      <p style="margin-top:2.5rem;">
+        <a class="cta" href="/season">
+          <span>Full results</span>
+          <svg viewBox="0 0 13.71 10.71" fill="none" aria-hidden="true"><path d="M0 5.35h13M8 10.35l5-5-5-5" stroke="currentColor" /></svg>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="page-section-inner">
+      <div class="section-head"><h2 class="section-title">Follow AMER</h2></div>
+      <nav class="page-nav">
+        {driver.socials.map((social) => (
+          <a href={social.href} rel="noopener noreferrer" target="_blank">{social.label} ↗</a>
+        ))}
+      </nav>
+    </div>
+  </section>
+</BaseLayout>

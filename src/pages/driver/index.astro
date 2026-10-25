@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getDriver, getSeasonStats } from "../../lib/api";
+
+const driver = getDriver();
+const stats = getSeasonStats();
+---
+
+<BaseLayout
+  title={`Driver — ${driver.name} | GRIDO1 Racing Systems`}
+  description={`${driver.name}, ${driver.team}. ${stats.year} season: P${stats.position}, ${stats.points} points, ${stats.wins} wins.`}
+>
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <p class="page-eyebrow">Driver_0{driver.number}</p>
+      <h1 class="page-title">{driver.firstName}</h1>
+      <p class="page-lead">{driver.bio}</p>
+      <p style="margin-top:2rem;">
+        <a class="cta" href={`/driver/${driver.slug}`}>
+          <span>Full profile</span>
+          <svg viewBox="0 0 13.71 10.71" fill="none" aria-hidden="true"><path d="M0 5.35h13M8 10.35l5-5-5-5" stroke="currentColor" /></svg>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="page-section-inner">
+      <div class="stat-row">
+        <div class="stat" style="color:var(--ink-950)">
+          <dt style="color:var(--slate-600)">Championship</dt>
+          <dd>P{stats.position}</dd>
+        </div>
+        <div class="stat" style="color:var(--ink-950)">
+          <dt style="color:var(--slate-600)">Points</dt>
+          <dd>{stats.points}</dd>
+        </div>
+        <div class="stat" style="color:var(--ink-950)">
+          <dt style="color:var(--slate-600)">Wins</dt>
+          <dd>{stats.wins}</dd>
+        </div>
+        <div class="stat" style="color:var(--ink-950)">
+          <dt style="color:var(--slate-600)">Podiums</dt>
+          <dd>{stats.podiums}</dd>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

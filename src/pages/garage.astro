@@ -1,0 +1,78 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getGarage } from "../lib/api";
+
+const car = getGarage();
+const specs = [
+  { label: "Chassis", value: car.chassis },
+  { label: "Power unit", value: car.powerUnit },
+  { label: "Engine", value: car.engine },
+  { label: "Energy recovery", value: car.energyRecovery },
+  { label: "Gearbox", value: car.gearbox },
+  { label: "Fuel", value: car.fuel },
+  { label: "Tyres", value: car.tyres },
+  { label: "Weight", value: `${car.weightKg} kg` },
+];
+const perf = [
+  { label: "Top speed", value: `${car.topSpeedKmh} km/h` },
+  { label: "0–100 km/h", value: car.zeroToHundred },
+  { label: "Weight", value: `${car.weightKg} kg` },
+];
+---
+
+<BaseLayout
+  title={`Garage — ${car.name} | GRIDO1 Racing Systems`}
+  description={`Inside the garage: ${car.name} technical specification, performance figures and engineering highlights.`}
+>
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <p class="page-eyebrow">The machine — code {car.code}</p>
+      <h1 class="page-title">{car.name.split(" ").slice(-1)[0]}<br /><span class="period">in the garage.</span></h1>
+      <p class="page-lead">{car.name} — the car under {`AMER's`} 2026 campaign.</p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="page-section-inner">
+      <div class="section-head"><h2 class="section-title">Performance</h2></div>
+      <dl class="stat-row" style="color:var(--ink-950)">
+        {perf.map((p) => (
+          <div class="stat">
+            <dt style="color:var(--slate-600)">{p.label}</dt>
+            <dd>{p.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="page-section page-section--dark">
+    <div class="page-section-inner">
+      <div class="section-head"><h2 class="section-title">Technical specification</h2></div>
+      <table class="data-table">
+        <tbody>
+          {specs.map((s) => (
+            <tr><td style="width:14rem;color:var(--cyan)">{s.label}</td><td style="text-transform:none">{s.value}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="page-section-inner">
+      <div class="section-head"><h2 class="section-title">Engineering highlights</h2></div>
+      <div class="card-grid">
+        {car.highlights.map((h) => (
+          <div class="card">
+            <div class="card-body">
+              <span class="card-eyebrow">{h.label}</span>
+              <h3 class="card-title" style="font-size:2rem;color:var(--cyan)">{h.value}</h3>
+              <p class="card-text">{h.detail}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

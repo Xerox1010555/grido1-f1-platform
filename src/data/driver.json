@@ -1,0 +1,20 @@
+{
+  "id": "driver_012",
+  "slug": "amer",
+  "name": "AMER",
+  "firstName": "AMER",
+  "lastName": "",
+  "number": 12,
+  "driverIdCode": "AMR",
+  "team": "AMER RACING",
+  "rookie": true,
+  "born": "2000-09-03",
+  "hometown": "The paddock",
+  "heightCm": 178,
+  "bio": "AMER is a privateer racer campaigning a BMW F10 535i in the 2026 time-attack championship. Built in the garage, tuned on track, and chasing every tenth — the program is about consistency, car control, and showing up every round.",
+  "socials": [
+    { "label": "Instagram", "href": "https://instagram.com" },
+    { "label": "X", "href": "https://x.com" },
+    { "label": "YouTube", "href": "https://youtube.com" }
+  ]
+}

@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPosts } from "../../lib/api";
+
+export function getStaticPaths() {
+  return getPosts().map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const others = getPosts().filter((p) => p.slug !== post.slug).slice(0, 2);
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" });
+const paragraphs = post.body.split("\n\n");
+---
+
+<BaseLayout title={`${post.title} — Journal | GRIDO1 Racing Systems`} description={post.excerpt}>
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <p class="page-eyebrow">
+        <a href="/journal" data-i18n="common.back">Back</a> — {post.category} — {formatDate(post.date)}
+      </p>
+      <h1 class="page-title" style="max-width:18ch">{post.title}</h1>
+      <p class="page-lead">{post.excerpt}</p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="page-section-inner">
+      <div class="prose">
+        {paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </div>
+  </section>
+
+  {others.length > 0 && (
+    <section class="page-section page-section--dark">
+      <div class="page-section-inner">
+        <div class="section-head"><h2 class="section-title">More from the journal</h2></div>
+        <div class="card-grid">
+          {others.map((p) => (
+            <a class="card" href={`/journal/${p.slug}`}>
+              <div class="card-body">
+                <span class="card-eyebrow">{p.category}</span>
+                <h3 class="card-title">{p.title}</h3>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>

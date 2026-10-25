@@ -1,0 +1,37 @@
+{
+  "stats": {
+    "year": 2026,
+    "team": "AMER RACING",
+    "car": "BMW F10 535i",
+    "races": 12,
+    "wins": 4,
+    "podiums": 9,
+    "points": 201,
+    "position": 1,
+    "dnfs": 1,
+    "poles": 3,
+    "fastestLaps": 2,
+    "leadGapToP2": 11
+  },
+  "rivals": [
+    { "position": 1, "name": "AMER", "team": "AMER RACING", "points": 201 },
+    { "position": 2, "name": "R. Castellano", "team": "Trackworks", "points": 190 },
+    { "position": 3, "name": "M. Okafor", "team": "Apex Motorsport", "points": 178 },
+    { "position": 4, "name": "L. Bergmann", "team": "Nordschleife Racing", "points": 152 },
+    { "position": 5, "name": "T. Nakamura", "team": "Studio 535i", "points": 147 }
+  ],
+  "results": [
+    { "round": 1,  "gpName": "Australian GP",       "circuit": "Albert Park Circuit",      "country": "Australia",     "date": "2026-03-08", "gridPosition": 4,  "finishPosition": 3,  "points": 15, "status": "finished", "fastestLap": false, "pole": false },
+    { "round": 2,  "gpName": "Chinese GP",          "circuit": "Shanghai International",   "country": "China",         "date": "2026-03-15", "gridPosition": 3,  "finishPosition": 2,  "points": 18, "status": "finished", "fastestLap": false, "pole": false },
+    { "round": 3,  "gpName": "Japanese GP",         "circuit": "Suzuka International",     "country": "Japan",         "date": "2026-03-29", "gridPosition": 1,  "finishPosition": 1,  "points": 25, "status": "finished", "fastestLap": true,  "pole": true, "note": "First win of the season — from pole to the flag." },
+    { "round": 4,  "gpName": "Bahrain GP",          "circuit": "Bahrain International",    "country": "Bahrain",       "date": "2026-04-12", "gridPosition": 6,  "finishPosition": 6,  "points": 8,  "status": "finished", "fastestLap": false, "pole": false, "note": "Rear-limited on degradation; salvaged points in the closing laps." },
+    { "round": 5,  "gpName": "Miami GP",            "circuit": "Miami International",      "country": "USA",           "date": "2026-05-03", "gridPosition": 2,  "finishPosition": 1,  "points": 25, "status": "finished", "fastestLap": true,  "pole": false },
+    { "round": 6,  "gpName": "Emilia-Romagna GP",   "circuit": "Autodromo Enzo e Dino Ferrari", "country": "Italy",     "date": "2026-05-17", "gridPosition": 5,  "finishPosition": null, "points": 0, "status": "dnf",     "fastestLap": false, "pole": false, "note": "Hydraulic failure while running P3 at Imola." },
+    { "round": 7,  "gpName": "Monaco GP",           "circuit": "Circuit de Monaco",        "country": "Monaco",        "date": "2026-05-24", "gridPosition": 7,  "finishPosition": 3,  "points": 15, "status": "finished", "fastestLap": false, "pole": false },
+    { "round": 8,  "gpName": "Canadian GP",         "circuit": "Circuit Gilles-Villeneuve","country": "Canada",        "date": "2026-06-07", "gridPosition": 1,  "finishPosition": 1,  "points": 25, "status": "finished", "fastestLap": false, "pole": true },
+    { "round": 9,  "gpName": "Spanish GP",          "circuit": "Circuit de Barcelona-Catalunya", "country": "Spain",     "date": "2026-06-21", "gridPosition": 3,  "finishPosition": 2,  "points": 18, "status": "finished", "fastestLap": false, "pole": false },
+    { "round": 10, "gpName": "Austrian GP",         "circuit": "Red Bull Ring",            "country": "Austria",       "date": "2026-06-29", "gridPosition": 2,  "finishPosition": 1,  "points": 25, "status": "finished", "fastestLap": false, "pole": true },
+    { "round": 11, "gpName": "British GP",          "circuit": "Silverstone",              "country": "United Kingdom","date": "2026-07-12", "gridPosition": 8,  "finishPosition": 4,  "points": 12, "status": "finished", "fastestLap": false, "pole": false, "note": "Recovered from a Lap-1 puncture in the wet." },
+    { "round": 12, "gpName": "Hungarian GP",        "circuit": "Hungaroring",              "country": "Hungary",       "date": "2026-07-19", "gridPosition": 6,  "finishPosition": 3,  "points": 15, "status": "finished", "fastestLap": false, "pole": false, "note": "A composed drive through a difficult weekend kept AMER at the top of the championship." }
+  ]
+}

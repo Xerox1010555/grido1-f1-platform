@@ -1,0 +1,88 @@
+---
+/**
+ * VIP glass coverflow carousel — stories from the journal.
+ * Renders the section shell; behaviour lives in src/lib/carousel.ts.
+ */
+import { getPosts } from "../lib/api";
+
+const posts = getPosts();
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+---
+
+<section class="stories" aria-labelledby="stories-title" data-stories>
+  <div class="stories-head">
+    <div>
+      <p class="page-eyebrow" style="color:var(--cyan)">Featured</p>
+      <h2 class="display stories-title" id="stories-title" data-reveal="words" data-i18n-reveal="stories.title" data-period="true">
+        Stories from
+        <br />the paddock.
+      </h2>
+      <p class="stories-lead" data-i18n="stories.lead">
+        Swipe the deck — race reports, milestones and features from the 2026 season.
+      </p>
+    </div>
+    <div class="carousel-arrows">
+      <button class="carousel-btn" type="button" data-carousel-prev aria-label="Previous slide">
+        <svg viewBox="0 0 13.71 10.71" fill="none" aria-hidden="true">
+          <path d="M13.71 5.35H.71M5.71.35L.71 5.35 5.71 10.35" stroke="currentColor" />
+        </svg>
+      </button>
+      <button class="carousel-btn" type="button" data-carousel-next aria-label="Next slide">
+        <svg viewBox="0 0 13.71 10.71" fill="none" aria-hidden="true">
+          <path d="M0 5.35h13M8 .35l5 5-5 5" stroke="currentColor" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div
+    class="carousel"
+    data-carousel
+    role="region"
+    aria-roledescription="carousel"
+    aria-label="Featured stories"
+    tabindex="0"
+  >
+    <div class="carousel-stage">
+      <ul class="carousel-track" data-carousel-track>
+        {
+          posts.map((post, index) => (
+            <li
+              class:list={["carousel-slide", { "is-active": index === 0 }]}
+              data-slide
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${index + 1} of ${posts.length}`}
+            >
+              <a class="story-card" href={`/journal/${post.slug}`}>
+                <div class="story-card-media">
+                  <img src={post.heroImage} alt={post.heroAlt} loading="lazy" width="640" height="400" />
+                  <span class="story-card-tag">{post.category}</span>
+                </div>
+                <div class="story-card-body">
+                  <span class="story-card-meta">
+                    {formatDate(post.date)} — {post.readMinutes} min read
+                  </span>
+                  <h3 class="story-card-title">{post.title}</h3>
+                  <p class="story-card-text">{post.excerpt}</p>
+                  <span class="story-card-link">
+                    <span data-i18n="common.readMore">Read more</span>
+                    <svg viewBox="0 0 13.71 10.71" fill="none" aria-hidden="true">
+                      <path d="M0 5.35h13M8 10.35l5-5-5-5" stroke="currentColor" />
+                    </svg>
+                  </span>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="carousel-foot">
+      <div class="carousel-dots" data-carousel-dots aria-label="Slide navigation"></div>
+      <span class="carousel-status" data-carousel-status aria-live="polite"></span>
+    </div>
+  </div>
+</section>
